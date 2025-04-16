@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -41,7 +39,7 @@ public class UserController {
 
     @PostMapping("/{id}/delete")
     public String deleteConfirm(Model model, @PathVariable long id) {
-        userRepository.deleteById(id);
+        userService.deleteUser(id);
         return "redirect:/users/";
     }
 
@@ -51,8 +49,14 @@ public class UserController {
         return "users_add";
     }
 
-    @PostMapping("/add")
-    public String addSave(@ModelAttribute User user) {
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable long id) {
+        model.addAttribute("user", userService.getUser(id));
+        return "users_add";
+    }
+
+    @PostMapping("/save")
+    public String save(@ModelAttribute User user) {
         userService.saveUser(user);
         return "redirect:/users/";
     }
