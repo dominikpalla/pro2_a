@@ -33,7 +33,7 @@ public class Pro2AApplication {
         User user = new User();
         user.setName(name);
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(password);
         user.setRole(role);
         userService.saveUser(user);
     }
